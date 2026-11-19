@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BLUE MAX XIO: Developer tools you can trust</title>
+<meta name="description" content="BLUE SOLV resolves errors and proves its fixes. BLUE CLI runs your coding agents under one roof. Open-source, local-first, BYOK.">
+<style>
+  :root {
+    --bg: #0B0F14;
+    --panel: #111820;
+    --line: #1E2A36;
+    --text: #E6EDF3;
+    --muted: #8B98A5;
+    --accent: #3B82F6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 72px 0; border-top: 1px solid var(--line); }
+  h1 { font-size: clamp(32px, 5vw, 52px); line-height: 1.1; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(24px, 3.5vw, 34px); letter-spacing: -0.01em; margin-bottom: 12px; }
+  h3 { font-size: 18px; margin-bottom: 6px; }
+  p.lead { color: var(--muted); font-size: 18px; margin-top: 16px; max-width: 620px; }
+  .eyebrow { color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,15,20,0.85); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-weight: 700; letter-spacing: 0.04em; color: var(--text); }
+  .navlinks { display: flex; gap: 20px; font-size: 14px; }
+  .navlinks a { color: var(--muted); }
+  .btn {
+    display: inline-block; padding: 10px 18px; border-radius: 8px;
+    background: var(--accent); color: #fff; font-weight: 600; font-size: 14px;
+  }
+  .btn.ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
+
+  .hero { padding: 88px 0 72px; background: radial-gradient(ellipse at 70% 0%, rgba(59,130,246,0.18), transparent 60%); }
+  .hero .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .cta { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+
+  .terminal {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    overflow: hidden;
+  }
+  .term-bar { padding: 10px 14px; border-bottom: 1px solid var(--line); display: flex; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #2A3642; }
+  .term-body {
+    font-family: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px; padding: 18px; white-space: pre-wrap; color: #C9D4DE; min-height: 230px;
+  }
+  .ok { color: #4ADE80; }
+  .accent { color: var(--accent); }
+  .label { font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+  .trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 8px; }
+  .trust div { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; font-size: 14px; color: var(--muted); }
+  .trust strong { display: block; color: var(--text); font-size: 15px; margin-bottom: 4px; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+  .card .num { color: var(--accent); font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
+
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+  .features .card p { color: var(--muted); font-size: 14.5px; }
+  .tag { display: inline-block; font-size: 12px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); margin-bottom: 10px; }
+
+  .codeblock {
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13.5px;
+    background: #0A0E13; border: 1px solid var(--line); border-radius: 8px;
+    padding: 14px 16px; margin-top: 20px; color: #C9D4DE; overflow-x: auto;
+  }
+  .soon { display: inline-block; font-size: 12px; color: #FBBF24; border: 1px solid #5C4A14; border-radius: 999px; padding: 3px 10px; }
+
+  .price { max-width: 420px; background: var(--panel); border: 1px solid var(--accent); border-radius: 12px; padding: 28px; margin-top: 32px; }
+  .price .big { font-size: 40px; font-weight: 700; margin: 6px 0; }
+  .price ul { list-style: none; color: var(--muted); font-size: 15px; margin: 14px 0 0; }
+  .price li { padding: 4px 0; }
+  .price li::before { content: "✓  "; color: var(--accent); }
+
+  form.waitlist { display: flex; gap: 10px; margin-top: 24px; max-width: 480px; flex-wrap: wrap; }
+  form.waitlist input {
+    flex: 1; min-width: 220px; padding: 12px 14px; border-radius: 8px;
+    border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 15px;
+  }
+  form.waitlist button { cursor: pointer; border: none; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0; color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  @media (max-width: 800px) {
+    .hero .grid { grid-template-columns: 1fr; }
+    .trust, .steps, .features { grid-template-columns: 1fr; }
+    .navlinks { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">BLUE MAX XIO</div>
+    <div class="navlinks">
+      <a href="#solv">SOLV</a>
+      <a href="#cli">CLI</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <a class="btn" href="#waitlist">Join waitlist</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap grid">
+    <div>
+      <div class="eyebrow">BLUE SOLV</div>
+      <h1>Your engineering teammate that proves its fixes.</h1>
+      <p class="lead">BLUE SOLV finds errors, proposes fixes, and runs your tests before it asks you to approve. Bring your own key. Nothing changes without you.</p>
+      <div class="cta">
+        <a class="btn" href="#waitlist">Join the waitlist</a>
+        <a class="btn ghost" href="#solv">See how it works</a>
+      </div>
+    </div>
+    <div>
+      <div class="terminal">
+        <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <div class="term-body"><span class="accent">$</span> blue solv
+
+3 errors found
+Running tests...
+<span class="ok">Found it:</span> TypeError in auth/session.ts:42
+Proposed fix: guard against undefined user.id
+Tests: <span class="ok">14 passed, 0 failed</span>
+
+Approve this change? [y/n]</div>
+      </div>
+      <div class="label">Example output. Live demo coming Nov 27.</div>
+    </div>
+  </div>
+</header>
+
+<section style="border-top:none; padding-top:24px;">
+  <div class="wrap">
+    <div class="trust">
+      <div><strong>Open-source</strong>Read the code, run it yourself.</div>
+      <div><strong>Local-first</strong>Your code stays on your machine.</div>
+      <div><strong>BYOK</strong>Use your own API key, pay your provider directly.</div>
+      <div><strong>Human approval</strong>Nothing changes until you say yes.</div>
+    </div>
+  </div>
+</section>
+
+<section id="solv">
+  <div class="wrap">
+    <div class="eyebrow">BLUE SOLV</div>
+    <h2>An error resolver that shows its work.</h2>
+    <p class="lead">Not just a suggested patch. A fix with evidence, and a decision that stays with you.</p>
+    <div class="steps">
+      <div class="card"><div class="num">01</div><h3>Attach</h3><p class="lead" style="font-size:15px;margin-top:6px">Add one line to your project and your own API key.</p></div>
+      <div class="card"><div class="num">02</div><h3>Diagnose</h3><p class="lead" style="font-size:15px;margin-top:6px">SOLV finds the error, explains the cause, and proposes a fix.</p></div>
+      <div class="card"><div class="num">03</div><h3>Approve</h3><p class="lead" style="font-size:15px;margin-top:6px">It runs your tests first. You approve or reject before anything changes.</p></div>
+    </div>
+
+    <div class="features">
+      <div class="card"><span class="tag">Fix</span><h3>Error resolution</h3><p>Finds errors and proposes fixes you can review line by line.</p></div>
+      <div class="card"><span class="tag">Review</span><h3>Pull request checks</h3><p>Reviews PRs, flags problems, and suggests changes.</p></div>
+      <div class="card"><span class="tag">Explain</span><h3>Plain-language causes</h3><p>Tells you why something broke, not just what to change.</p></div>
+      <div class="card"><span class="tag">Ship</span><h3>Test before approval</h3><p>Runs your test suite on every proposed fix before you see it.</p></div>
+    </div>
+
+    <p class="lead" style="margin-top:28px;">Install (coming soon):</p>
+    <div class="codeblock">npm install @blue/solv   <span style="color:var(--muted)"># placeholder, confirm before launch</span></div>
+    <p style="margin-top:12px;"><span class="soon">Launching Nov 27</span></p>
+  </div>
+</section>
+
+<section id="cli">
+  <div class="wrap">
+    <div class="eyebrow">BLUE CLI</div>
+    <h2>Your coding agents, under one roof.</h2>
+    <p class="lead">A terminal workspace where you run and review multiple coding agents, with cost and status visible for every task.</p>
+    <div class="terminal" style="margin-top:28px;">
+      <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="term-body">agent-1  refactor auth       <span class="ok">running</span>   $0.42 est.
+agent-2  write tests        <span class="accent">waiting review</span>   $0.18 est.
+agent-3  update docs        <span class="ok">done</span>      $0.05</div>
+    </div>
+    <div class="label">Illustrative view. Not a live product screen.</div>
+    <div class="steps" style="margin-top:28px;">
+      <div class="card"><h3>Review before run</h3><p class="lead" style="font-size:15px;margin-top:6px">See the plan before any agent touches your code.</p></div>
+      <div class="card"><h3>Cost prediction</h3><p class="lead" style="font-size:15px;margin-top:6px">Know what a task will cost before it starts.</p></div>
+      <div class="card"><h3>Local-first control</h3><p class="lead" style="font-size:15px;margin-top:6px">Your repos and keys stay on your machine.</p></div>
+    </div>
+    <p style="margin-top:20px;"><span class="soon">Coming soon</span></p>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Pricing</div>
+    <h2>Free to start. Bring your own key.</h2>
+    <div class="price">
+      <div class="eyebrow" style="margin:0">Launch plan</div>
+      <div class="big">Free</div>
+      <p class="lead" style="font-size:15px;margin-top:0">BYOK. You pay your AI provider directly.</p>
+      <ul>
+        <li>BLUE SOLV at launch</li>
+        <li>BLUE CLI at launch</li>
+        <li>Founding Dev offer for the first 5,000 devs</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="waitlist">
+  <div class="wrap">
+    <div class="eyebrow">Waitlist</div>
+    <h2>Get early access on Nov 27.</h2>
+    <p class="lead">Leave your email and we'll tell you when it's live.</p>
+    <!-- Replace WAITLIST_URL with your form link (for example, from Tally). Until then, this form sends nothing. -->
+    <form class="waitlist" action="https://tally.so/r/o9RL7X" method="post" onsubmit="if (this.action.endsWith('WAITLIST_URL')) { alert('Waitlist coming soon. Thanks for your interest!'); return false; }">
+      <input type="email" name="email" placeholder="you@company.com" required>
+      <button class="btn" type="submit">Join waitlist</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>BLUE MAX XIO. Open-source, local-first, BYOK.</div>
+    <div><a href="#solv" style="color:var(--muted)">SOLV</a> · <a href="#cli" style="color:var(--muted)">CLI</a> · <a href="#pricing" style="color:var(--muted)">Pricing</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
